@@ -1,19 +1,24 @@
 // src/app/guards/auth.guard.ts
-import { Injectable } from '@angular/core';
 import { CanActivateFn } from '@angular/router';
-import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { Auth as AuthService } from '../services/auth';
+import { Auth } from '../services/auth';
+import { isPlatformBrowser } from '@angular/common';
+import { PLATFORM_ID, inject } from '@angular/core';
 
-// Standalone-style guard using CanActivateFn
 export const authGuard: CanActivateFn = () => {
-  const authService = inject(AuthService);
+  const auth = inject(Auth);
   const router = inject(Router);
+  const platformId = inject(PLATFORM_ID);
 
-  if (authService.isAuthenticated()) {
+  if (!isPlatformBrowser(platformId)) {
+    // during SSR, allow route so rendering can continue -- client will re-evaluate
     return true;
-  } else {
-    router.navigate(['/login']);
-    return false;
   }
+
+  if (auth.isAuthenticated()) {
+    return true;
+  }
+
+  router.navigate(['/login']);
+  return false;
 };

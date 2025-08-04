@@ -16,6 +16,7 @@ export class Register {
   username = '';
   password = '';
   confirmPassword = '';
+  role = 'USER'; // Default role
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -25,8 +26,14 @@ export class Register {
       return;
     }
 
-    this.authService.register(this.username, this.password).subscribe({
-      next: (res) => {
+    const payload = {
+      username: this.username,
+      password: this.password,
+      role: this.role
+    };
+
+    this.authService.register(payload).subscribe({
+      next: () => {
         alert('Registration successful!');
         this.router.navigate(['/login']);
       },

@@ -1,48 +1,77 @@
-// src/app/services/auth.ts
-import { Injectable } from '@angular/core';
+// File: src/app/services/auth.ts
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import {jwtDecode} from 'jwt-decode';
 
-@Injectable({
-  providedIn: 'root',
-})
+// DTO for user list response
+export interface UserDto {
+  id: number;
+  username: string;
+  roles: string[];
+}
+
+@Injectable({ providedIn: 'root' })
 export class Auth {
-  private readonly apiUrl = 'http://localhost:8081/api/auth'; // 🔁 Replace with your backend API URL
+  private readonly apiUrl = 'http://localhost:8085/auth';
   private token: string | null = null;
+  private isBrowser = false;
 
-  constructor(private http: HttpClient, private router: Router) {}
-
-  // 🔐 Send login request
-  login(username: string, password: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/login`, { username, password });
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
-  // 🔐 Send registration request
-  register(username: string, password: string): Observable<any> {
-  return this.http.post(`${this.apiUrl}/register`, { username, password });
+  login(username: string, password: string): Observable<{ token: string }> {
+    return this.http.post<{ token: string }>(`${this.apiUrl}/login`, { username, password });
   }
 
-  // 💾 Store token in localStorage + memory
+  register(payload: { username: string; password: string; role: string }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/register`, payload);
+  }
+
   setToken(token: string): void {
     this.token = token;
-    localStorage.setItem('access_token', token);
+    if (this.isBrowser) {
+      localStorage.setItem('access_token', token);
+    }
   }
 
-  // 🔐 Get token (from memory or storage)
   getToken(): string | null {
-    return this.token || localStorage.getItem('access_token');
+    if (this.token) {
+      return this.token;
+    }
+    if (this.isBrowser) {
+      return localStorage.getItem('access_token');
+    }
+    return null;
   }
 
-  // 🔒 Logout user
   logout(): void {
     this.token = null;
-    localStorage.removeItem('access_token');
+    if (this.isBrowser) {
+      localStorage.removeItem('access_token');
+    }
     this.router.navigate(['/login']);
   }
 
-  // ✅ Check if user is logged in
   isAuthenticated(): boolean {
-    return this.getToken() !== null;
+    return !!this.getToken();
+  }
+
+  getDecodedToken(): any {
+    const token = this.getToken();
+    if (!token) return null;
+    return jwtDecode(token);
+  }
+
+  /** Fetch all users (ADMIN only) */
+  getUsers(): Observable<UserDto[]> {
+    return this.http.get<UserDto[]>(`${this.apiUrl}/users`);
   }
 }

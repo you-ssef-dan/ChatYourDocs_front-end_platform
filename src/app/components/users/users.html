@@ -1,0 +1,18 @@
+<!-- chatyourdocs/src/app/components/users/users.html -->
+<div>
+  <h2>All Registered Users</h2>
+  <p *ngIf="error" class="error">{{ error }}</p>
+  <table *ngIf="users.length">
+    <thead>
+      <tr><th>ID</th><th>Username</th><th>Roles</th></tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let u of users">
+        <td>{{ u.id }}</td>
+        <td>{{ u.username }}</td>
+        <td>{{ u.roles.join(', ') }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <p *ngIf="!users.length && !error">No users found.</p>
+</div>

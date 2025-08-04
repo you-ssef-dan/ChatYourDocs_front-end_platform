@@ -1,4 +1,11 @@
+<!-- chatyourdocs/src/app/components/dashboard/dashboard.html -->
 <div>
-    <h2>Welcome to Dashboard!</h2>
-    <button (click)="logout()">Logout</button>
+  <h2>Welcome, {{ username }}!</h2>
+  <p><strong>Your Roles:</strong> {{ roles.join(', ') }}</p>
+
+  <!-- Only show link if ADMIN -->
+  <a *ngIf="roles.includes('ADMIN')" [routerLink]="['/users']">View All Users</a>
+
+  <button (click)="logout()">Logout</button>
 </div>
+
