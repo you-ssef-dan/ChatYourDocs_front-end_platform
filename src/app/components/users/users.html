@@ -1,18 +1,38 @@
 <!-- chatyourdocs/src/app/components/users/users.html -->
-<div>
-  <h2>All Registered Users</h2>
-  <p *ngIf="error" class="error">{{ error }}</p>
-  <table *ngIf="users.length">
-    <thead>
-      <tr><th>ID</th><th>Username</th><th>Roles</th></tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let u of users">
-        <td>{{ u.id }}</td>
-        <td>{{ u.username }}</td>
-        <td>{{ u.roles.join(', ') }}</td>
-      </tr>
-    </tbody>
-  </table>
-  <p *ngIf="!users.length && !error">No users found.</p>
+<div class="users-wrapper">
+  <div class="users-container">
+    <h1>All Registered Users</h1>
+
+    <div *ngIf="error" class="error-message">
+      <svg class="error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="15" y1="9" x2="9" y2="15"></line>
+        <line x1="9" y1="9" x2="15" y2="15"></line>
+      </svg>
+      {{ error }}
+    </div>
+
+    <div *ngIf="!users.length && !error" class="empty-state">
+      No users found.
+    </div>
+
+    <div class="users-table" *ngIf="users.length">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let u of users">
+            <td>{{ u.id }}</td>
+            <td>{{ u.username }}</td>
+            <td>{{ u.roles.includes('ADMIN') ? 'ADMIN' : u.roles.join(', ') }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>

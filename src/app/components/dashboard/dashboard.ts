@@ -2,8 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Auth } from '../../services/auth';
-import { RouterModule } from '@angular/router';
-
+import { RouterModule, Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,7 +15,7 @@ export class Dashboard implements OnInit {
   username: string = '';
   roles: string[] = [];
 
-  constructor(private auth: Auth) {}
+  constructor(private auth: Auth, private router: Router) {}
 
   ngOnInit(): void {
     const decodedToken = this.auth.getDecodedToken();
@@ -26,7 +25,12 @@ export class Dashboard implements OnInit {
     }
   }
 
+  get displayRoles(): string {
+    return this.roles.includes('ADMIN') ? 'ADMIN' : this.roles.join(', ');
+  }
+
   logout(): void {
     this.auth.logout();
+    this.router.navigate(['/login']);
   }
 }

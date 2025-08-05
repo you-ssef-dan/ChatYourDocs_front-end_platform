@@ -2,13 +2,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Auth as AuthService } from '../../services/auth';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './register.html',
   styleUrl: './register.scss'
 })
@@ -16,31 +16,61 @@ export class Register {
   username = '';
   password = '';
   confirmPassword = '';
-  role = 'USER'; // Default role
+  role = 'USER';
+  isLoading = false;
+  errorMessage = '';
+  showPassword = false;
+  showConfirmPassword = false;
 
   constructor(private authService: AuthService, private router: Router) {}
 
   onRegister(): void {
-    if (this.password !== this.confirmPassword) {
-      alert('Passwords do not match!');
+    if (!this.username.trim() || !this.password || !this.confirmPassword) {
+      this.errorMessage = 'Please fill in all fields';
       return;
     }
 
-    const payload = {
-      username: this.username,
+    if (this.password !== this.confirmPassword) {
+      this.errorMessage = 'Passwords do not match';
+      return;
+    }
+
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    this.authService.register({
+      username: this.username.trim(),
       password: this.password,
       role: this.role
-    };
-
-    this.authService.register(payload).subscribe({
+    }).subscribe({
       next: () => {
-        alert('Registration successful!');
         this.router.navigate(['/login']);
       },
       error: (err) => {
         console.error('Registration error', err);
-        alert('Registration failed!');
+        this.isLoading = false;
+
+        if (err.status === 409) {
+          this.errorMessage = 'Username already exists';
+        } else if (err.status === 0) {
+          this.errorMessage = 'Unable to connect to server';
+        } else {
+          this.errorMessage = 'Registration failed. Please try again.';
+        }
       }
     });
   }
+
+  togglePassword(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+  toggleConfirmPassword(): void {
+    this.showConfirmPassword = !this.showConfirmPassword;
+  }
+
+  clearError(): void {
+    this.errorMessage = '';
+  }
 }
+

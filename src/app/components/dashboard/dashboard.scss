@@ -1,0 +1,112 @@
+// chatyourdocs/src/app/components/dashboard/dashboard.scss
+.dashboard-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white;
+  padding: 2rem;
+}
+
+.dashboard-container {
+  background: white;
+  border-radius: 20px;
+  padding: 2.5rem;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.6s ease-out;
+  border: 1px solid #e2e8f0;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dashboard-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e40af;
+  margin-bottom: 0.5rem;
+}
+
+.roles {
+  font-size: 1rem;
+  color: #4b5563;
+}
+
+.badge {
+  display: inline-block;
+  background: #3b82f6;
+  color: white;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  margin-left: 0.5rem;
+}
+
+.dashboard-actions {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.action-link {
+  color: #1e40af;
+  text-decoration: none;
+  font-weight: 600;
+  border: 2px solid #1e40af;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.action-link:hover {
+  background: #1e40af;
+  color: white;
+}
+
+.logout-btn {
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
+  color: white;
+  font-weight: 600;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.logout-btn:hover {
+  background: #991b1b;
+}
+
+@media (max-width: 480px) {
+  .dashboard-container {
+    padding: 2rem 1.5rem;
+  }
+
+  .dashboard-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .roles {
+    font-size: 0.9rem;
+  }
+
+  .logout-btn, .action-link {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+  }
+}

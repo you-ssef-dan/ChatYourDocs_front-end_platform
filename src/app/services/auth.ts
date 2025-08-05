@@ -61,8 +61,21 @@ export class Auth {
   }
 
   isAuthenticated(): boolean {
-    return !!this.getToken();
+  const token = this.getToken();
+  if (!token) return false;
+
+  try {
+    const decoded: any = jwtDecode(token);
+    const now = Math.floor(Date.now() / 1000);
+    const valid = decoded.exp && decoded.exp > now;
+    if (!valid) this.logout();
+    return valid;
+  } catch (e) {
+    this.logout();
+    return false;
   }
+}
+
 
   getDecodedToken(): any {
     const token = this.getToken();

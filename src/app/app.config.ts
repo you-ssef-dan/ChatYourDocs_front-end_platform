@@ -1,9 +1,11 @@
 // chatyourdocs/src/app/app.config.ts
 import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter }     from '@angular/router';
 import { provideHttpClient, withFetch, withInterceptorsFromDi } from '@angular/common/http';
-import { routes } from './app.routes';
+import { routes }            from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor }   from './interceptors/auth-interceptor-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -12,9 +14,15 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
     provideHttpClient(
-  withFetch(),
-  withInterceptorsFromDi() // ✅ Enables AuthInterceptor from DI
-)
+      withFetch(),
+      withInterceptorsFromDi()  // ← Active le mécanisme DI pour les interceptors
+    ),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ]
 };
+
 
