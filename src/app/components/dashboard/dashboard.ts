@@ -1,19 +1,28 @@
 // chatyourdocs/src/app/components/dashboard/dashboard.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Auth } from '../../services/auth';
 import { RouterModule, Router } from '@angular/router';
+import { Auth } from '../../services/auth';
+import { Overview } from '../overview/overview';
+import { Chatbots } from '../chatbots/chatbots';
+import { UsersComponent } from '../users/users';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, Overview, Chatbots, UsersComponent],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.scss']
 })
 export class Dashboard implements OnInit {
   username: string = '';
   roles: string[] = [];
+  activeView: 'overview' | 'chatbots' |'users' = 'overview';
+
+  // dynamic values passed to children
+  usersCount = 5;
+  chatbotsCount = 4;
+  documentsCount = 10;
 
   constructor(private auth: Auth, private router: Router) {}
 
@@ -32,5 +41,9 @@ export class Dashboard implements OnInit {
   logout(): void {
     this.auth.logout();
     this.router.navigate(['/login']);
+  }
+
+  setActive(view: 'overview' | 'chatbots' | 'users') {
+  this.activeView = view;
   }
 }

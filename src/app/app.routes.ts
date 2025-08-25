@@ -1,27 +1,45 @@
 // src/app/app.routes.ts
 import { Routes } from '@angular/router';
-import { Login as LoginComponent } from './components/login/login';
-import { Register } from './components/register/register';
-import { NoPage } from './components/no-page/no-page';
-import { Dashboard } from './components/dashboard/dashboard';
 import { authGuard } from './guards/auth-guard';
 import { adminGuard } from './guards/admin-guard';
-import { UsersComponent } from './components/users/users'; // Assuming you have a Users component
-
 
 export const routes: Routes = [
-  { path: 'login', component: LoginComponent },
-
-  { path: 'register', component: Register},
-
-  { path: 'dashboard', component: Dashboard, canActivate: [authGuard] },// 👈 Protect this route
-  
   {
-    path: 'users',
-    component: UsersComponent,
-    canActivate: [authGuard, adminGuard]
+    path: 'login',
+    loadComponent: () => import('./components/login/login').then(m => m.Login)
   },
-  { path: '', redirectTo: 'login', pathMatch: 'full' },  // default redirect
-  
-  { path: '**', component:NoPage }  // wildcard redirect
+  {
+    path: 'register',
+    loadComponent: () => import('./components/register/register').then(m => m.Register)
+  },
+
+  {
+    path: 'dashboard',
+    loadComponent: () => import('./components/dashboard/dashboard').then(m => m.Dashboard),
+    canActivate: [authGuard],
+    children: [
+      { path: '', redirectTo: 'overview', pathMatch: 'full' }, // default
+      {
+        path: 'overview',
+        loadComponent: () => import('./components/overview/overview').then(m => m.Overview)
+      },
+      {
+        path: 'chatbots',
+        loadComponent: () => import('./components/chatbots/chatbots').then(m => m.Chatbots)
+      },
+      {
+        path: 'users',
+        loadComponent: () => import('./components/users/users').then(m => m.UsersComponent),
+        canActivate: [adminGuard]
+      },
+      {
+        path: 'add-user',
+        loadComponent: () => import('./components/add-user/add-user').then(m => m.AddUser)
+        // note: adjust export name if your AddUser component export differs
+      }
+    ]
+  },
+
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '**', loadComponent: () => import('./components/no-page/no-page').then(m => m.NoPage) }
 ];

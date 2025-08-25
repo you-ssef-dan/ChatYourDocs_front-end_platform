@@ -1,16 +1,76 @@
 <!-- chatyourdocs/src/app/components/dashboard/dashboard.html -->
-<div class="dashboard-wrapper">
-  <div class="dashboard-container">
-    <div class="dashboard-header">
-      <h1>Welcome, {{ username }}!</h1>
-      <p class="roles">Role: <span class="badge">{{ displayRoles }}</span></p>
+<div class="dashboard-layout">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <div class="logo-icon">X</div>
+        <span class="logo-text">X-Docs</span>
+      </div>
     </div>
 
-    <div class="dashboard-actions">
-      <a *ngIf="roles.includes('ADMIN')" [routerLink]="['/users']" class="action-link">
-        Manage Users
-      </a>
-      <button (click)="logout()" class="logout-btn">Logout</button>
+    <nav class="sidebar-nav">
+      <div class="nav-item" [class.active]="activeView === 'overview'" (click)="setActive('overview')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        </svg>
+        <span>Overview</span>
+      </div>
+
+      <div class="nav-item" [class.active]="activeView === 'chatbots'" (click)="setActive('chatbots')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+        <span>Chatbots</span>
+      </div>
+
+      <div class="nav-item" *ngIf="roles.includes('ADMIN')" [class.active]="activeView === 'users'" (click)="setActive('users')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+        <span>Users</span>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-menu">
+        <div class="user-avatar">{{ username.charAt(0).toUpperCase() }}</div>
+        <button (click)="logout()" class="settings-btn">Settings</button>
+      </div>
     </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="content-header">
+      <h1>
+        {{ activeView === 'overview' ? 'Overview' : activeView === 'chatbots' ? 'Chatbots' : 'Users' }}
+      </h1>
+      <p class="subtitle">
+        {{ activeView === 'overview' 
+            ? "Welcome back! Here's a look at your X-Docs platform." 
+            : activeView === 'chatbots' 
+              ? "Manage and inspect your active chatbots." 
+              : "Manage registered users." }}
+      </p>
+    </div>
+
+    <!-- Render the selected child component -->
+    <app-overview
+      *ngIf="activeView === 'overview'"
+      [usersCount]="usersCount"
+      [chatbotsCount]="chatbotsCount"
+      [documentsCount]="documentsCount">
+    </app-overview>
+
+    <app-chatbots
+      *ngIf="activeView === 'chatbots'"
+      [chatbotsCount]="chatbotsCount">
+    </app-chatbots>
+
+    <app-users
+      *ngIf="activeView === 'users'">
+    </app-users>
   </div>
 </div>

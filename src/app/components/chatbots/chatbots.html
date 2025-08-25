@@ -1,0 +1,31 @@
+<div class="chatbots-wrapper">
+  <div class="chatbots-header">
+    <div class="title-and-count">
+      <h2>Chatbots</h2>
+      <div class="count">{{ chatbotsCount !== null ? chatbotsCount : chatbots.length }}</div>
+    </div>
+    <div class="actions">
+      <button class="btn-primary">Create Chatbot</button>
+    </div>
+  </div>
+
+  <div class="chatbot-list">
+    <div class="chatbot-card" *ngFor="let cb of chatbots">
+      <div class="card-left">
+        <div class="avatar">{{ cb.name.charAt(0).toUpperCase() }}</div>
+      </div>
+      <div class="card-body">
+        <div class="name">{{ cb.name }}</div>
+        <div class="meta">Users: {{ cb.users }} • Updated: {{ cb.updatedAt }}</div>
+      </div>
+      <div class="card-right">
+        <span class="status" [class.active]="cb.status === 'active'"
+                           [class.paused]="cb.status === 'paused'"
+                           [class.offline]="cb.status === 'offline'">
+          {{ cb.status }}
+        </span>
+        <button class="btn-small">Open</button>
+      </div>
+    </div>
+  </div>
+</div>

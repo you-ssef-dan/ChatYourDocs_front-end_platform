@@ -1,4 +1,4 @@
-<!-- chatyourdocs/src/app/components/register/register.html -->
+<!-- chatyourdocs/src/app/components/add-user/add-user.html -->
 <div class="login-wrapper">
   <div class="login-container">
     <div class="login-header">
@@ -6,7 +6,7 @@
       <p>Sign up to get started</p>
     </div>
 
-    <form (ngSubmit)="onRegister()" class="login-form" #registerForm="ngForm">
+    <form (ngSubmit)="onAddUser()" class="login-form" #registerForm="ngForm">
       <div class="error-message" *ngIf="errorMessage" [class.show]="errorMessage">
         <svg class="error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
           <circle cx="12" cy="12" r="10"></circle>
@@ -113,6 +113,28 @@
         </div>
       </div>
 
+      <!-- Role Selector -->
+      <div class="form-group role-selector">
+        <label>Select Role</label>
+        <div class="role-options">
+          <button 
+            type="button" 
+            class="USER"
+            [class.active]="role === 'USER'" 
+            (click)="role = 'USER'">
+            User
+          </button>
+          <button 
+            type="button" 
+            class="ADMIN"
+            [class.active]="role === 'ADMIN'" 
+            (click)="role = 'ADMIN'">
+            Admin
+          </button>
+        </div>
+      </div>
+
+
       <!-- Submit Button -->
       <button 
         type="submit" 
@@ -129,12 +151,5 @@
         </div>
       </button>
     </form>
-
-    <!-- Login Link -->
-    <div class="register-link">
-      <p>Already have an account? 
-        <a [routerLink]="['/login']" class="link">Sign in here</a>
-      </p>
-    </div>
   </div>
 </div>

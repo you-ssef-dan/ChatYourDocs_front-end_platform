@@ -2,12 +2,13 @@
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { Auth, UserDto } from '../../services/auth';
+import { RouterModule } from '@angular/router';
 
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule   ],
   templateUrl: './users.html',
   styleUrls: ['./users.scss']
 })

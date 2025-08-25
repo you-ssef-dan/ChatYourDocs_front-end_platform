@@ -31,9 +31,13 @@ export class Auth {
     return this.http.post<{ token: string }>(`${this.apiUrl}/login`, { username, password });
   }
 
-  register(payload: { username: string; password: string; role: string }): Observable<any> {
+  register(payload: { username: string; password: string, role: string}): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, payload);
   }
+
+  addUser(payload: { username: string; password: string; role: string }): Observable<any> {
+  return this.http.post(`${this.apiUrl}/addUser`, payload);
+}
 
   setToken(token: string): void {
     this.token = token;

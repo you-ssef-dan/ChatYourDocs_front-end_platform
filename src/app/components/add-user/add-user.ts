@@ -1,4 +1,4 @@
-// src/app/components/register/register.ts
+// src/app/components/add-user/add-user.ts
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -6,16 +6,17 @@ import { Router, RouterModule } from '@angular/router';
 import { Auth as AuthService } from '../../services/auth';
 
 @Component({
-  selector: 'app-register',
+  selector: 'app-add-user',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
-  templateUrl: './register.html',
-  styleUrl: './register.scss'
+  templateUrl: './add-user.html',
+  styleUrls: ['./add-user.scss']
 })
-export class Register {
+export class AddUser {
   username = '';
   password = '';
   confirmPassword = '';
+  role = 'USER';
   isLoading = false;
   errorMessage = '';
   showPassword = false;
@@ -23,7 +24,7 @@ export class Register {
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  onRegister(): void {
+  onAddUser(): void {
     if (!this.username.trim() || !this.password || !this.confirmPassword) {
       this.errorMessage = 'Please fill in all fields';
       return;
@@ -37,13 +38,13 @@ export class Register {
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.authService.register({
+    this.authService.addUser({
       username: this.username.trim(),
       password: this.password,
-      role: 'USER' // Default role, can be changed as needed
+      role: this.role
     }).subscribe({
       next: () => {
-        this.router.navigate(['/login']);
+        this.router.navigate(['/users']);
       },
       error: (err) => {
         console.error('Registration error', err);

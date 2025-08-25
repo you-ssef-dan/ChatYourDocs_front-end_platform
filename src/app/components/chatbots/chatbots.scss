@@ -1,0 +1,114 @@
+// hatyourdocs/src/app/components/chatbots/chatbots.scss
+.chatbots-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.chatbots-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+
+  .title-and-count {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+
+    h2 {
+      margin: 0;
+      font-size: 1.125rem;
+      color: #1e293b;
+      font-weight: 600;
+    }
+
+    .count {
+      font-size: 1rem;
+      color: #64748b;
+      background: #f1f5f9;
+      padding: 0.25rem 0.5rem;
+      border-radius: 6px;
+    }
+  }
+
+  .actions {
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border: none;
+      color: white;
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  }
+}
+
+.chatbot-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+
+  .chatbot-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+
+    .card-left {
+      .avatar {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        color: #4338ca;
+      }
+    }
+
+    .card-body {
+      flex: 1;
+      .name {
+        font-weight: 600;
+        color: #0f172a;
+      }
+      .meta {
+        font-size: 0.875rem;
+        color: #64748b;
+      }
+    }
+
+    .card-right {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: flex-end;
+
+      .status {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 6px;
+        text-transform: capitalize;
+        font-weight: 600;
+      }
+      .status.active { background: #ecfdf5; color: #16a34a; }
+      .status.paused { background: #fff7ed; color: #f59e0b; }
+      .status.offline { background: #f8fafc; color: #64748b; }
+
+      .btn-small {
+        background: none;
+        border: 1px solid #e2e8f0;
+        padding: 0.35rem 0.5rem;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+    }
+  }
+}

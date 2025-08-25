@@ -1,4 +1,20 @@
 //chatyourdocs/src/app/components/users/users.scss
+
+.actions {
+  text-align: right;
+  margin-bottom: 1rem;
+
+  .add-user-btn {
+    background: #1e40af;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+}
+
 .users-wrapper {
   display: flex;
   justify-content: center;
