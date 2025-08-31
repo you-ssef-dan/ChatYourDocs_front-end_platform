@@ -1,4 +1,4 @@
-<!-- chatyourdocs/src/app/components/dashboard/dashboard.html -->
+<!-- File: src/app/components/dashboard/dashboard.html-->
 <div class="dashboard-layout">
   <!-- Sidebar -->
   <div class="sidebar">
@@ -10,27 +10,27 @@
     </div>
 
     <nav class="sidebar-nav">
-      <div class="nav-item" [class.active]="activeView === 'overview'" (click)="setActive('overview')">
+      <a class="nav-item" routerLink="/dashboard/overview" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
         </svg>
         <span>Overview</span>
-      </div>
+      </a>
 
-      <div class="nav-item" [class.active]="activeView === 'chatbots'" (click)="setActive('chatbots')">
+      <a class="nav-item" routerLink="/dashboard/chatbots" routerLinkActive="active">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
         </svg>
         <span>Chatbots</span>
-      </div>
+      </a>
 
-      <div class="nav-item" *ngIf="roles.includes('ADMIN')" [class.active]="activeView === 'users'" (click)="setActive('users')">
+      <a *ngIf="roles.includes('ADMIN')" class="nav-item" routerLink="/dashboard/users" routerLinkActive="active">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
           <circle cx="12" cy="7" r="4"/>
         </svg>
         <span>Users</span>
-      </div>
+      </a>
     </nav>
 
     <div class="sidebar-footer">
@@ -44,33 +44,11 @@
   <!-- Main Content -->
   <div class="main-content">
     <div class="content-header">
-      <h1>
-        {{ activeView === 'overview' ? 'Overview' : activeView === 'chatbots' ? 'Chatbots' : 'Users' }}
-      </h1>
-      <p class="subtitle">
-        {{ activeView === 'overview' 
-            ? "Welcome back! Here's a look at your X-Docs platform." 
-            : activeView === 'chatbots' 
-              ? "Manage and inspect your active chatbots." 
-              : "Manage registered users." }}
-      </p>
+      <h1>{{ pageTitle }}</h1>
+      <p class="subtitle">{{ pageSubtitle }}</p>
     </div>
 
-    <!-- Render the selected child component -->
-    <app-overview
-      *ngIf="activeView === 'overview'"
-      [usersCount]="usersCount"
-      [chatbotsCount]="chatbotsCount"
-      [documentsCount]="documentsCount">
-    </app-overview>
-
-    <app-chatbots
-      *ngIf="activeView === 'chatbots'"
-      [chatbotsCount]="chatbotsCount">
-    </app-chatbots>
-
-    <app-users
-      *ngIf="activeView === 'users'">
-    </app-users>
+    <!-- Router will render the active child route here -->
+    <router-outlet></router-outlet>
   </div>
 </div>

@@ -1,0 +1,37 @@
+<div class="create-chatbot-wrapper">
+  <h2>Create a New Chatbot</h2>
+
+  <form (ngSubmit)="createChatbot()" enctype="multipart/form-data">
+    <!-- Chatbot Name -->
+    <div class="form-group">
+      <label for="name">Chatbot Name</label>
+      <input id="name" [(ngModel)]="chatbot.name" name="name" required />
+    </div>
+
+    <!-- File Upload -->
+    <div class="form-group">
+      <label for="files">Upload Files (documents or images)</label>
+      <input
+        type="file"
+        id="files"
+        (change)="onFilesSelected($event)"
+        multiple
+        accept=".pdf,.doc,.docx,.txt,.xlsx,.xls,.csv,.pptx,.jpg,.jpeg,.png,.gif"
+      />
+    </div>
+
+    <!-- Preview Selected Files -->
+    <div class="file-list" *ngIf="selectedFiles.length > 0">
+      <p><strong>Files selected:</strong></p>
+      <ul>
+        <li *ngFor="let f of selectedFiles">{{ f.name }}</li>
+      </ul>
+    </div>
+
+    <!-- Actions -->
+    <div class="form-actions">
+      <button type="submit" class="btn-primary">Save Chatbot</button>
+      <button type="button" class="btn-secondary" routerLink="/chatbots">Cancel</button>
+    </div>
+  </form>
+</div>

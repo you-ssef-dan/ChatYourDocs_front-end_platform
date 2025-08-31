@@ -1,0 +1,20 @@
+<!-- chatyourdocs/src/app/components/chat/chat.html -->
+<div class="chat-wrapper">
+  <div class="chat-header">
+    <h2>{{ chatbotName }}</h2>
+    <span class="status" [class.active]="status==='active'" [class.paused]="status==='paused'" [class.offline]="status==='offline'">
+      {{ status }}
+    </span>
+  </div>
+
+  <div class="chat-messages">
+    <div *ngFor="let msg of messages" [class.user]="msg.sender==='user'" [class.bot]="msg.sender==='bot'" class="message">
+      {{ msg.text }}
+    </div>
+  </div>
+
+  <div class="chat-input">
+    <input type="text" placeholder="Type a message..." [(ngModel)]="newMessage" (keyup.enter)="sendMessage()">
+    <button (click)="sendMessage()">Send</button>
+  </div>
+</div>

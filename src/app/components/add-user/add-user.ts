@@ -44,7 +44,7 @@ export class AddUser {
       role: this.role
     }).subscribe({
       next: () => {
-        this.router.navigate(['/users']);
+        this.router.navigate(['dashboard/users']);
       },
       error: (err) => {
         console.error('Registration error', err);

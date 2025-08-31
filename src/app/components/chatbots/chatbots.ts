@@ -1,29 +1,51 @@
-// chatyourdocs/src/app/components/dashboard/chatbots/chatbots.ts
-import { Component, Input } from '@angular/core';
+// chatyourdocs/src/app/components/chatbots.ts
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { ChatbotService } from '../../services/chatbot';
 
 interface Chatbot {
-  id: string;
+  id: string | number;
   name: string;
-  status: 'active' | 'paused' | 'offline';
-  users?: number;
+  status?: 'active' | 'paused' | 'offline';
   updatedAt?: string;
+  createdAt?: string;
 }
 
 @Component({
-  selector: 'app-chatbots',      // must match <app-chatbots> usage
+  selector: 'app-chatbots',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './chatbots.html',
   styleUrls: ['./chatbots.scss']
 })
-export class Chatbots {
-  @Input() chatbotsCount: number | null = null;    // <-- this is required
-  // example data
-  chatbots: Chatbot[] = [
-    { id: 'cb-1', name: 'Support Assistant', status: 'active', users: 120, updatedAt: '2025-07-01' },
-    { id: 'cb-2', name: 'Docs Helper', status: 'active', users: 57, updatedAt: '2025-06-22' },
-    { id: 'cb-3', name: 'Sales Bot', status: 'paused', users: 8, updatedAt: '2025-05-12' },
-    { id: 'cb-4', name: 'Onboarding', status: 'offline', users: 0, updatedAt: '2025-06-01' }
-  ];
+export class Chatbots implements OnInit {
+  @Input() chatbotsCount: number | null = null;
+
+  chatbots: Chatbot[] = []; // start empty
+
+  constructor(private chatbotService: ChatbotService) {}
+
+  ngOnInit() {
+    this.loadChatbots();
+  }
+
+  loadChatbots() {
+    // Optionally: keep existing Python RAG chatbots logic here
+
+    // Fetch Express backend chatbots
+    this.chatbotService.listUserExpressChatbots().subscribe({
+      next: (res) => {
+        // Map to your interface if needed
+        this.chatbots = res.map((cb: any) => ({
+          id: cb.id,
+          name: cb.name,
+          createdAt: cb.createdAt,
+          updatedAt: cb.updatedAt,
+          status: 'active', // default or map if you have status
+        }));
+      },
+      error: (err) => console.error('Error loading Express chatbots', err)
+    });
+  }
 }

@@ -1,28 +1,28 @@
-// chatyourdocs/src/app/components/dashboard/dashboard.ts
+// File: src/app/components/dashboard/dashboard.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Router } from '@angular/router';
+import { RouterModule, Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { Auth } from '../../services/auth';
-import { Overview } from '../overview/overview';
-import { Chatbots } from '../chatbots/chatbots';
-import { UsersComponent } from '../users/users';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule, Overview, Chatbots, UsersComponent],
+  imports: [CommonModule, RouterModule],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.scss']
 })
 export class Dashboard implements OnInit {
   username: string = '';
   roles: string[] = [];
-  activeView: 'overview' | 'chatbots' |'users' = 'overview';
 
   // dynamic values passed to children
   usersCount = 5;
   chatbotsCount = 4;
   documentsCount = 10;
+
+  pageTitle = 'Overview';
+  pageSubtitle = "Welcome back! Here's a look at your X-Docs platform.";
 
   constructor(private auth: Auth, private router: Router) {}
 
@@ -32,18 +32,25 @@ export class Dashboard implements OnInit {
       this.username = decodedToken.sub;
       this.roles = decodedToken.scope ? decodedToken.scope.split(' ') : [];
     }
-  }
 
-  get displayRoles(): string {
-    return this.roles.includes('ADMIN') ? 'ADMIN' : this.roles.join(', ');
+    // Keep header title in sync with the active child route
+    this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe(() => {
+      const url = this.router.url;
+      if (url.includes('/dashboard/chatbots')) {
+        this.pageTitle = 'Chatbots';
+        this.pageSubtitle = 'Manage and inspect your active chatbots.';
+      } else if (url.includes('/dashboard/users')) {
+        this.pageTitle = 'Users';
+        this.pageSubtitle = 'Manage registered users.';
+      } else {
+        this.pageTitle = 'Overview';
+        this.pageSubtitle = "Welcome back! Here's a look at your X-Docs platform.";
+      }
+    });
   }
 
   logout(): void {
     this.auth.logout();
     this.router.navigate(['/login']);
-  }
-
-  setActive(view: 'overview' | 'chatbots' | 'users') {
-  this.activeView = view;
   }
 }

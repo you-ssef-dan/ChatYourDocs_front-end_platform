@@ -1,3 +1,4 @@
+<!-- hatyourdocs/src/app/components/chatbots/chatbots.html-->
 <div class="chatbots-wrapper">
   <div class="chatbots-header">
     <div class="title-and-count">
@@ -5,8 +6,11 @@
       <div class="count">{{ chatbotsCount !== null ? chatbotsCount : chatbots.length }}</div>
     </div>
     <div class="actions">
-      <button class="btn-primary">Create Chatbot</button>
-    </div>
+    <button class="btn-primary" [routerLink]="['/chatbots/create']">
+      Create Chatbot
+    </button>
+</div>
+
   </div>
 
   <div class="chatbot-list">
@@ -16,7 +20,7 @@
       </div>
       <div class="card-body">
         <div class="name">{{ cb.name }}</div>
-        <div class="meta">Users: {{ cb.users }} • Updated: {{ cb.updatedAt }}</div>
+        <div class="meta"> • Updated: {{ cb.updatedAt }}</div>
       </div>
       <div class="card-right">
         <span class="status" [class.active]="cb.status === 'active'"
@@ -24,7 +28,7 @@
                            [class.offline]="cb.status === 'offline'">
           {{ cb.status }}
         </span>
-        <button class="btn-small">Open</button>
+        <button class="btn-small" [routerLink]="['/chat', cb.id]">Open</button>
       </div>
     </div>
   </div>
