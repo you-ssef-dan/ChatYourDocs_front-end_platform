@@ -6,7 +6,7 @@
       <div class="count">{{ chatbotsCount !== null ? chatbotsCount : chatbots.length }}</div>
     </div>
     <div class="actions">
-    <button class="btn-primary" [routerLink]="['/chatbots/create']">
+    <button class="btn-primary" [routerLink]="['/dashboard/chatbotcreate']">
       Create Chatbot
     </button>
 </div>
@@ -28,7 +28,7 @@
                            [class.offline]="cb.status === 'offline'">
           {{ cb.status }}
         </span>
-        <button class="btn-small" [routerLink]="['/chat', cb.id]">Open</button>
+        <button class="btn-small" [routerLink]="['/dashboard/chatbots', cb.id]">Open</button>
       </div>
     </div>
   </div>

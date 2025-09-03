@@ -59,7 +59,7 @@ ngOnInit(): void {
       next: (res: any) => {
         // res.result contains the LLM response from your FastAPI
         alert("Response from RAG is returned: " );
-        const answer = res?.result || "wooowcd .";
+        const answer = res?.result || "angular response!! .";
         this.messages.push({ sender: 'bot', text: answer });
       },
       error: (err) => {

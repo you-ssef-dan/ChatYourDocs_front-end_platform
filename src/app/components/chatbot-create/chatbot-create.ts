@@ -40,46 +40,21 @@ export class ChatbotCreateComponent {
     return;
   }
 
-  // 1️⃣ First, create the chatbot metadata in Express
-    this.chatbotService.createExpressChatbot(this.chatbot.name).subscribe({
-      next: (res: any) => {
-        console.log('✅ Express chatbot created', res);
+  const formData = new FormData();
+  formData.append('name', this.chatbot.name);
+  // user_id and chatbot_id will be handled by server; no need to set user_id here.
+  this.selectedFiles.forEach(file => formData.append('files', file, file.name));
 
-        const chatbotId = res.chatbot.id; // <-- assume Express returns { id: ... }
-        alert(`Chatbot metadata created with ID: ${chatbotId}`);
-      const formData = new FormData();
-      formData.append('name', this.chatbot.name);
-      formData.append('chatbot_id', chatbotId);
-      const decodedToken = this.auth.getDecodedToken();
-      if (!decodedToken?.sub) { // assuming the token has `sub` as user ID
-          alert('User not authenticated');
-          return;
-        }
-      formData.append('user_id', decodedToken?.uid.toString() || '');
-
-      this.selectedFiles.forEach(file => formData.append('files', file));
-
-      // 2️⃣ Call Python RAG service
-      this.chatbotService.createRagChatbot(formData).subscribe({
-        next: (ragRes) => {
-          console.log('✅ RAG chatbot created', ragRes);
-          this.chatbot = { name: '' };
-          this.selectedFiles = [];
-          this.router.navigate(['/dashboard/chatbots']);
-        },
-        error: async (err) => {
-          console.error('❌ RAG creation failed, rolling back Express chatbot', err);
-          
-          // Rollback Express chatbot
-          await this.chatbotService.deleteExpressChatbot(chatbotId).toPromise();
-
-          alert('Failed to create RAG chatbot. Chatbot creation canceled.');
-        }
-      });
+  this.chatbotService.createExpressChatbot(formData).subscribe({
+    next: (res: any) => {
+      console.log('✅ Chatbot created (Express + Python):', res);
+      this.chatbot = { name: '' };
+      this.selectedFiles = [];
+      this.router.navigate(['/dashboard/chatbots']);
     },
-    error: (err) => {
-      console.error('❌ Error creating Express chatbot', err);
-      alert('Failed to create chatbot metadata');
+    error: async (err) => {
+      console.error('❌ Chatbot creation failed', err);
+      alert('Failed to create chatbot. Please try again.');
     }
   });
 }

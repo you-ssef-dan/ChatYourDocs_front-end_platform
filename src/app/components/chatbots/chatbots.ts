@@ -31,7 +31,6 @@ export class Chatbots implements OnInit {
   }
 
   loadChatbots() {
-    // Optionally: keep existing Python RAG chatbots logic here
 
     // Fetch Express backend chatbots
     this.chatbotService.listUserExpressChatbots().subscribe({

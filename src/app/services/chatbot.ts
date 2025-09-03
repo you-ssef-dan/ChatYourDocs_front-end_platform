@@ -8,25 +8,24 @@ import { Auth } from './auth';
   providedIn: 'root'
 })
 export class ChatbotService {
-  private ragApiUrl = 'http://localhost:8000';
+  private ragApiUrl = 'http://localhost:8085/python-api';
   private expressApiUrl = 'http://localhost:8085/chatbots';
 
   constructor(private http: HttpClient, private auth: Auth) {}
 
-  // -------------------
-  // Python RAG backend
-  // -------------------
-  createRagChatbot(formData: FormData): Observable<any> {
-    return this.http.post<any>(`${this.ragApiUrl}/chatbots`, formData);
-  }
+  // // -------------------
+  // // Python RAG backend
+  // // -------------------
+  // createRagChatbot(formData: FormData): Observable<any> {
+  //   return this.http.post<any>(`${this.ragApiUrl}/chatbots`, formData);
+  // }
 
   askRag(query: string, chatbotId: string): Observable<any> {
-    const userId = this.auth.getDecodedToken()?.uid;
+    const userId = this.auth.getDecodedToken()?.uid;  
     if (!userId) throw new Error('User not authenticated');
 
     const params = new HttpParams()
       .set('query', query)
-      .set('user_id', userId)
       .set('chatbot_id', chatbotId)
       .set('include_images', 'true');
 
@@ -36,9 +35,10 @@ export class ChatbotService {
   // -------------------
   // Express backend
   // -------------------
-  createExpressChatbot(name: string): Observable<any> {
-    return this.http.post(this.expressApiUrl, { nom: name });
+  createExpressChatbot(formData: FormData): Observable<any> {
+    return this.http.post<any>(this.expressApiUrl, formData);
   }
+  
 
   listUserExpressChatbots(): Observable<any> {
     return this.http.get(`${this.expressApiUrl}/my`);

@@ -42,10 +42,18 @@ export const routes: Routes = [
         canActivate: [adminGuard]
       },
       {
-        path: 'add',
+        path: 'users/adduser',
         loadComponent: () => import('./components/add-user/add-user').then(m => m.AddUser)
         // note: adjust export name if your AddUser component export differs
-      }
+      },
+      {
+    path: 'chatbots/:id',
+    loadComponent: () => import('./components/chat/chat').then(m => m.Chat)
+  },
+  {
+    path: 'chatbotcreate',
+    loadComponent: () => import('./components/chatbot-create/chatbot-create').then(m => m.ChatbotCreateComponent)
+  },
     ]
   },
 
