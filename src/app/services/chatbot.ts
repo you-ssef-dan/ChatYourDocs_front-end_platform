@@ -21,7 +21,7 @@ export class ChatbotService {
   // }
 
   askRag(query: string, chatbotId: string): Observable<any> {
-    const userId = this.auth.getDecodedToken()?.uid;  
+    const userId = this.auth.getDecodedToken()?.uid;
     if (!userId) throw new Error('User not authenticated');
 
     const params = new HttpParams()

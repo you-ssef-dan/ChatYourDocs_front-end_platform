@@ -21,15 +21,11 @@ export class AuthInterceptor implements HttpInterceptor {
 
     // Get token
     const token = this.auth.getToken();
-    console.log('🔑 Token found:', token ? 'YES' : 'NO');
-    console.log('🔑 Token value:', token ? `${token.substring(0, 20)}...` : 'null');
 
     if (token) {
       const cloned = req.clone({
         headers: req.headers.set('Authorization', `Bearer ${token}`)
       });
-      console.log('✅ Authorization header added to request');
-      console.log('📋 Final headers:', cloned.headers.get('Authorization') ? 'Present' : 'Missing');
       return next.handle(cloned);
     } else {
       console.log('❌ No token available - request sent without auth');

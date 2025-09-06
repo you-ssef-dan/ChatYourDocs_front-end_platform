@@ -91,4 +91,9 @@ export class Auth {
   getUsers(): Observable<UserDto[]> {
     return this.http.get<UserDto[]>(`${this.apiUrl}/users`);
   }
+
+  //delete user by id (ADMIN only)
+  deleteUser(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/users/delete/${id}`);
+}
 }

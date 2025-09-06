@@ -28,7 +28,16 @@
                            [class.offline]="cb.status === 'offline'">
           {{ cb.status }}
         </span>
-        <button class="btn-small" [routerLink]="['/dashboard/chatbots', cb.id]">Open</button>
+        <!-- action buttons: Open + Delete -->
+        <div class="action-buttons">
+          <button class="btn-small" [routerLink]="['/dashboard/chatbots', cb.id]">Open</button>
+          <button
+            class="btn-small btn-delete"
+            (click)="deleteChatbot(cb.id)"
+            aria-label="Delete">
+            Delete
+          </button>
+        </div>
       </div>
     </div>
   </div>

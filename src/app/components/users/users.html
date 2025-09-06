@@ -15,9 +15,10 @@
     <div *ngIf="!users.length && !error" class="empty-state">
       No users found.
     </div>
-<div class="actions">
-  <button class="add-user-btn" [routerLink]="['/dashboard/users/adduser']">+ Add New User</button>
-</div>
+
+    <div class="actions">
+      <button class="add-user-btn" [routerLink]="['/dashboard/users/adduser']">+ Add New User</button>
+    </div>
 
     <div class="users-table" *ngIf="users.length">
       <table>
@@ -26,6 +27,7 @@
             <th>ID</th>
             <th>Username</th>
             <th>Role</th>
+            <th *ngIf="isAdmin">Actions</th> <!-- ✅ only show if current user is ADMIN -->
           </tr>
         </thead>
         <tbody>
@@ -33,6 +35,16 @@
             <td>{{ u.id }}</td>
             <td>{{ u.username }}</td>
             <td>{{ u.roles.includes('ADMIN') ? 'ADMIN' : u.roles.join(', ') }}</td>
+            <td *ngIf="isAdmin">
+              <!-- Check if the row user is the current logged-in admin -->
+              <button 
+                *ngIf="decodedId !== u.id" 
+                class="delete-btn" 
+                (click)="deleteUser(u.id)">
+                Delete
+              </button>
+              <span *ngIf="decodedId === u.id" class="cannot-delete">You !</span>
+            </td>
           </tr>
         </tbody>
       </table>
