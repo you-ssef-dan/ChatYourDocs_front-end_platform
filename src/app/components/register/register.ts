@@ -1,4 +1,4 @@
-// src/app/components/register/register.ts
+// File: src/app/components/register/register.ts
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -14,6 +14,7 @@ import { Auth as AuthService } from '../../services/auth';
 })
 export class Register {
   username = '';
+  email = ''; // new email field
   password = '';
   confirmPassword = '';
   isLoading = false;
@@ -24,8 +25,13 @@ export class Register {
   constructor(private authService: AuthService, private router: Router) {}
 
   onRegister(): void {
-    if (!this.username.trim() || !this.password || !this.confirmPassword) {
+    if (!this.username.trim() || !this.email.trim() || !this.password || !this.confirmPassword) {
       this.errorMessage = 'Please fill in all fields';
+      return;
+    }
+
+    if (!this.authService.validateEmail(this.email.trim())) {
+      this.errorMessage = 'Please enter a valid email address';
       return;
     }
 
@@ -39,6 +45,7 @@ export class Register {
 
     this.authService.register({
       username: this.username.trim(),
+      email: this.email.trim(),
       password: this.password,
       role: 'USER' // Default role, can be changed as needed
     }).subscribe({
@@ -50,7 +57,8 @@ export class Register {
         this.isLoading = false;
 
         if (err.status === 409) {
-          this.errorMessage = 'Username already exists';
+          // backend now returns 400/409 depending on implementation — keep this message
+          this.errorMessage = 'Email already exists';
         } else if (err.status === 0) {
           this.errorMessage = 'Unable to connect to server';
         } else {
@@ -72,4 +80,3 @@ export class Register {
     this.errorMessage = '';
   }
 }
-

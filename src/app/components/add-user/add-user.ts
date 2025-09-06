@@ -14,6 +14,7 @@ import { Auth as AuthService } from '../../services/auth';
 })
 export class AddUser {
   username = '';
+  email = '';
   password = '';
   confirmPassword = '';
   role = 'USER';
@@ -25,8 +26,13 @@ export class AddUser {
   constructor(private authService: AuthService, private router: Router) {}
 
   onAddUser(): void {
-    if (!this.username.trim() || !this.password || !this.confirmPassword) {
+    if (!this.username.trim() || !this.email.trim() || !this.password || !this.confirmPassword) {
       this.errorMessage = 'Please fill in all fields';
+      return;
+    }
+
+    if (!this.authService.validateEmail(this.email.trim())) {
+      this.errorMessage = 'Please enter a valid email address';
       return;
     }
 
@@ -40,6 +46,7 @@ export class AddUser {
 
     this.authService.addUser({
       username: this.username.trim(),
+      email: this.email.trim(),
       password: this.password,
       role: this.role
     }).subscribe({
@@ -47,15 +54,16 @@ export class AddUser {
         this.router.navigate(['dashboard/users']);
       },
       error: (err) => {
-        console.error('Registration error', err);
+        console.error('Add user error', err);
         this.isLoading = false;
 
         if (err.status === 409) {
-          this.errorMessage = 'Username already exists';
+          // backend may return 409 for duplicate email or username
+          this.errorMessage = 'Email or username already exists';
         } else if (err.status === 0) {
           this.errorMessage = 'Unable to connect to server';
         } else {
-          this.errorMessage = 'Registration failed. Please try again.';
+          this.errorMessage = 'Adding user failed. Please try again.';
         }
       }
     });
@@ -73,4 +81,3 @@ export class AddUser {
     this.errorMessage = '';
   }
 }
-

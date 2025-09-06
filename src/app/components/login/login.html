@@ -17,28 +17,28 @@
         {{ errorMessage }}
       </div>
 
-      <!-- Username Field -->
+      <!-- Email Field (replaced username) -->
       <div class="form-group">
-        <label for="username">Username</label>
+        <label for="email">Email</label>
         <div class="input-wrapper">
           <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
+            <path d="M4 4h16v16H4z"></path>
+            <polyline points="22,6 12,13 2,6"></polyline>
           </svg>
           <input 
-            type="text" 
-            id="username"
-            [(ngModel)]="username" 
-            name="username" 
-            placeholder="Enter your username"
+            type="email" 
+            id="email"
+            [(ngModel)]="email" 
+            name="email" 
+            placeholder="you@example.com"
             required 
-            autocomplete="username"
+            autocomplete="email"
             (input)="clearError()"
             [disabled]="isLoading"
-            #usernameInput="ngModel" />
+            #emailInput="ngModel" />
         </div>
-        <div class="field-error" *ngIf="usernameInput.invalid && usernameInput.touched">
-          Username is required
+        <div class="field-error" *ngIf="emailInput.invalid && emailInput.touched">
+          Email is required
         </div>
       </div>
 

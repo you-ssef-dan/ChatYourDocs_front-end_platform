@@ -10,6 +10,7 @@ import {jwtDecode} from 'jwt-decode';
 export interface UserDto {
   id: number;
   username: string;
+  email?: string;
   roles: string[];
 }
 
@@ -27,17 +28,27 @@ export class Auth {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
-  login(username: string, password: string): Observable<{ token: string }> {
-    return this.http.post<{ token: string }>(`${this.apiUrl}/login`, { username, password });
+  // src/app/services/validators.ts
+validateEmail(email: string): boolean {
+  // basic, practical regex — good for client-side validation
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(email);
+}
+
+
+  // login now expects email + password
+  login(email: string, password: string): Observable<{ token: string }> {
+    return this.http.post<{ token: string }>(`${this.apiUrl}/login`, { email, password });
   }
 
-  register(payload: { username: string; password: string, role: string}): Observable<any> {
+  // register now sends email as well
+  register(payload: { username: string; email: string; password: string; role: string}): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, payload);
   }
 
-  addUser(payload: { username: string; password: string; role: string }): Observable<any> {
-  return this.http.post(`${this.apiUrl}/addUser`, payload);
-}
+  addUser(payload: { username: string; email?: string; password: string; role: string }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/addUser`, payload);
+  }
 
   setToken(token: string): void {
     this.token = token;
@@ -65,21 +76,20 @@ export class Auth {
   }
 
   isAuthenticated(): boolean {
-  const token = this.getToken();
-  if (!token) return false;
+    const token = this.getToken();
+    if (!token) return false;
 
-  try {
-    const decoded: any = jwtDecode(token);
-    const now = Math.floor(Date.now() / 1000);
-    const valid = decoded.exp && decoded.exp > now;
-    if (!valid) this.logout();
-    return valid;
-  } catch (e) {
-    this.logout();
-    return false;
+    try {
+      const decoded: any = jwtDecode(token);
+      const now = Math.floor(Date.now() / 1000);
+      const valid = decoded.exp && decoded.exp > now;
+      if (!valid) this.logout();
+      return valid;
+    } catch (e) {
+      this.logout();
+      return false;
+    }
   }
-}
-
 
   getDecodedToken(): any {
     const token = this.getToken();
@@ -95,5 +105,5 @@ export class Auth {
   //delete user by id (ADMIN only)
   deleteUser(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/users/delete/${id}`);
-}
+  }
 }

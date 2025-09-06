@@ -1,4 +1,4 @@
-// chatyourdocs/src/app/components/login/login.ts
+// File: chatyourdocs/src/app/components/login/login.ts
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -13,7 +13,8 @@ import { Auth } from '../../services/auth';
   styleUrl: './login.scss'
 })
 export class Login {
-  username: string = '';
+  // switched to email-based login
+  email: string = '';
   password: string = '';
   isLoading: boolean = false;
   errorMessage: string = '';
@@ -22,15 +23,20 @@ export class Login {
   constructor(private auth: Auth, private router: Router) {}
 
   onLogin(): void {
-    if (!this.username.trim() || !this.password.trim()) {
+    if (!this.email.trim() || !this.password.trim()) {
       this.errorMessage = 'Please fill in all fields';
+      return;
+    }
+
+    if (!this.auth.validateEmail(this.email.trim())) {
+      this.errorMessage = 'Please enter a valid email address';
       return;
     }
 
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.auth.login(this.username.trim(), this.password).subscribe({
+    this.auth.login(this.email.trim(), this.password).subscribe({
       next: (response) => {
         this.auth.setToken(response.token);
         this.router.navigate(['/dashboard']);
@@ -38,9 +44,9 @@ export class Login {
       error: (err) => {
         this.isLoading = false;
         console.error('Login failed', err);
-        
+
         if (err.status === 401) {
-          this.errorMessage = 'Invalid username or password';
+          this.errorMessage = 'Invalid email or password';
         } else if (err.status === 0) {
           this.errorMessage = 'Unable to connect to server. Please try again.';
         } else {

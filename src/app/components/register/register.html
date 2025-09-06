@@ -40,6 +40,30 @@
         </div>
       </div>
 
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email">Email</label>
+        <div class="input-wrapper">
+          <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M4 4h16v16H4z"></path>
+            <polyline points="22,6 12,13 2,6"></polyline>
+          </svg>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            [(ngModel)]="email"
+            required
+            placeholder="you@example.com"
+            (input)="clearError()"
+            [disabled]="isLoading"
+            #emailInput="ngModel" />
+        </div>
+        <div class="field-error" *ngIf="emailInput.invalid && emailInput.touched">
+          A valid email is required
+        </div>
+      </div>
+
       <!-- Password -->
       <div class="form-group">
         <label for="password">Password</label>
