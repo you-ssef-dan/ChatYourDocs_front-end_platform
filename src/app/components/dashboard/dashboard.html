@@ -43,7 +43,6 @@
 
   <!-- Main Content -->
   <div class="main-content">
-
     <!-- Inlined Overview (shown when showOverview = true) -->
     <div *ngIf="showOverview">
       <div class="content-header">
@@ -52,7 +51,8 @@
       </div>
 
       <div class="stats-grid">
-        <div class="stat-card">
+        <!-- Users card only for ADMIN -->
+        <div class="stat-card" *ngIf="roles.includes('ADMIN')">
           <div class="stat-icon users">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
@@ -97,7 +97,6 @@
         </div>
       </div>
     </div>
-
     <!-- Child routes (chatbots, users, chat, etc.) -->
     <router-outlet *ngIf="!showOverview"></router-outlet>
   </div>

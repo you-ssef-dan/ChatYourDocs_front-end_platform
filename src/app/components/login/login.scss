@@ -1,23 +1,71 @@
-// chatyourdocs/src/app/components/login/login.scss
 .login-wrapper {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #ffffff 0%, #fbfcff 100%);
+  background: linear-gradient(135deg, #5E7892 0%, #6B7F96 50%, #5E7892 100%);
   padding: 1rem;
+  position: relative;
+  overflow: hidden;
+  color: #F3EFDF;
+}
+
+.bg-pattern {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.1;
+  z-index: 0;
+}
+
+.floating-element {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(189, 207, 170, 0.3) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: float 20s infinite ease-in-out;
+}
+
+.floating-element:nth-child(1) {
+  top: 10%;
+  left: -5%;
+  animation-delay: 0s;
+}
+
+.floating-element:nth-child(2) {
+  top: 60%;
+  right: -10%;
+  animation-delay: -7s;
+}
+
+.floating-element:nth-child(3) {
+  bottom: 20%;
+  left: 20%;
+  animation-delay: -14s;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-30px) rotate(120deg); }
+  66% { transform: translateY(15px) rotate(240deg); }
 }
 
 .login-container {
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(94, 120, 146, 0.2);
   backdrop-filter: blur(10px);
   border-radius: 20px;
   padding: 2.5rem;
   width: 100%;
   max-width: 420px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(243, 239, 223, 0.1);
   animation: slideUp 0.6s ease-out;
+  z-index: 10;
+  position: relative;
 }
 
 @keyframes slideUp {
@@ -38,16 +86,16 @@
   h1 {
     font-size: 2rem;
     font-weight: 700;
-    color: #2d3748;
+    color: #F3EFDF;
     margin: 0 0 0.5rem 0;
-    background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+    background: linear-gradient(135deg, #F3EFDF 0%, #A7B7C6 50%, #BDCFAA 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
   
   p {
-    color: #718096;
+    color: #A7B7C6;
     font-size: 1rem;
     margin: 0;
   }
@@ -60,8 +108,8 @@
 }
 
 .error-message {
-  background: linear-gradient(135deg, #fed7d7, #feb2b2);
-  color: #c53030;
+  background: rgba(220, 100, 100, 0.15);
+  color: #FF6B6B;
   padding: 1rem;
   border-radius: 12px;
   display: flex;
@@ -69,7 +117,7 @@
   gap: 0.75rem;
   font-size: 0.9rem;
   font-weight: 500;
-  border: 1px solid #fca5a5;
+  border: 1px solid rgba(255, 107, 107, 0.3);
   opacity: 0;
   transform: translateY(-10px);
   animation: none;
@@ -84,7 +132,15 @@
     width: 20px;
     height: 20px;
     flex-shrink: 0;
+    color: #FF6B6B;
   }
+}
+
+.field-error {
+  color: #FF6B6B;
+  font-size: 0.85rem;
+  margin-left: 0.25rem;
+  animation: fadeIn 0.3s ease-out;
 }
 
 @keyframes errorSlide {
@@ -106,7 +162,7 @@
 
 label {
   font-weight: 600;
-  color: #2d3748;
+  color: #F3EFDF;
   font-size: 0.9rem;
   margin-left: 0.25rem;
 }
@@ -122,7 +178,7 @@ label {
   left: 1rem;
   width: 20px;
   height: 20px;
-  color: #a0aec0;
+  color: #A7B7C6;
   z-index: 1;
   pointer-events: none;
 }
@@ -130,28 +186,29 @@ label {
 input {
   width: 100%;
   padding: 1rem 1rem 1rem 3rem;
-  border: 2px solid #e2e8f0;
+  border: 2px solid rgba(167, 183, 198, 0.3);
   border-radius: 12px;
   font-size: 1rem;
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(243, 239, 223, 0.05);
+  color: #F3EFDF;
   transition: all 0.3s ease;
+  
+  &::placeholder {
+    color: #A7B7C6;
+  }
   
   &:focus {
     outline: none;
-    border-color: #3b82f6;
-    background: rgba(255, 255, 255, 1);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    border-color: #BDCFAA;
+    background: rgba(243, 239, 223, 0.1);
+    box-shadow: 0 0 0 3px rgba(189, 207, 170, 0.2);
     transform: translateY(-2px);
   }
   
   &:disabled {
-    background: #f7fafc;
-    color: #a0aec0;
+    background: rgba(243, 239, 223, 0.03);
+    color: #A7B7C6;
     cursor: not-allowed;
-  }
-  
-  &::placeholder {
-    color: #a0aec0;
   }
 }
 
@@ -163,15 +220,15 @@ input {
   cursor: pointer;
   padding: 0.5rem;
   border-radius: 6px;
-  color: #a0aec0;
+  color: #A7B7C6;
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
   
   &:hover:not(:disabled) {
-    color: #3b82f6;
-    background: rgba(59, 130, 246, 0.1);
+    color: #BDCFAA;
+    background: rgba(189, 207, 170, 0.2);
   }
   
   &:disabled {
@@ -186,7 +243,7 @@ input {
 }
 
 .field-error {
-  color: #e53e3e;
+  color: #BDCFAA;
   font-size: 0.85rem;
   margin-left: 0.25rem;
   animation: fadeIn 0.3s ease-out;
@@ -198,8 +255,8 @@ input {
 }
 
 .submit-btn {
-  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
-  color: white;
+  background: linear-gradient(135deg, #BDCFAA 0%, #8B9E83 100%);
+  color: #5E7892;
   border: none;
   padding: 1rem 2rem;
   border-radius: 12px;
@@ -210,10 +267,12 @@ input {
   position: relative;
   overflow: hidden;
   margin-top: 0.5rem;
+  box-shadow: 0 4px 15px rgba(189, 207, 170, 0.3);
   
   &:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 8px 25px rgba(189, 207, 170, 0.4);
+    filter: brightness(1.1);
   }
   
   &:active:not(:disabled) {
@@ -245,6 +304,7 @@ input {
     width: 20px;
     height: 20px;
     animation: spin 1s linear infinite;
+    color: #5E7892;
   }
 }
 
@@ -257,22 +317,22 @@ input {
   text-align: center;
   margin-top: 2rem;
   padding-top: 1.5rem;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid rgba(243, 239, 223, 0.1);
   
   p {
-    color: #718096;
+    color: #A7B7C6;
     margin: 0;
     font-size: 0.9rem;
   }
   
   .link {
-    color: #3b82f6;
+    color: #BDCFAA;
     text-decoration: none;
     font-weight: 600;
     transition: all 0.2s ease;
     
     &:hover {
-      color: #1e40af;
+      color: #F3EFDF;
       text-decoration: underline;
     }
   }

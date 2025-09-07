@@ -2,14 +2,14 @@
 .chatbots-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .chatbots-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
 
   .title-and-count {
     display: flex;
@@ -18,112 +18,200 @@
 
     h2 {
       margin: 0;
-      font-size: 1.125rem;
+      font-size: 1.25rem;
       color: #1e293b;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     .count {
-      font-size: 1rem;
+      font-size: 0.875rem;
       color: #64748b;
       background: #f1f5f9;
-      padding: 0.25rem 0.5rem;
-      border-radius: 6px;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-weight: 500;
     }
   }
 
   .actions {
     .btn-primary {
-      background: linear-gradient(135deg, #667eea, #764ba2);
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       border: none;
       color: white;
-      padding: 0.5rem 0.75rem;
-      border-radius: 8px;
+      padding: 0.75rem 1.25rem;
+      border-radius: 12px;
       cursor: pointer;
+      font-weight: 600;
+      font-size: 0.875rem;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+      }
     }
   }
 }
 
 .chatbot-list {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.75rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
 
   .chatbot-card {
     display: flex;
-    align-items: center;
-    gap: 1rem;
+    flex-direction: column;
+    gap: 0.75rem;
     background: white;
     border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    padding: 0.75rem 1rem;
+    border-radius: 16px;
+    padding: 1.25rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      border-color: #c7d2fe;
+
+      &::before {
+        opacity: 1;
+      }
+    }
 
     .card-left {
+      align-self: center;
+      margin-bottom: 0.25rem;
+      
       .avatar {
-        width: 44px;
-        height: 44px;
-        border-radius: 10px;
-        background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
         display: flex;
         align-items: center;
         justify-content: center;
         font-weight: 700;
         color: #4338ca;
+        font-size: 1rem;
+        box-shadow: 0 2px 8px rgba(67, 56, 202, 0.15);
       }
     }
 
     .card-body {
-      flex: 1;
+      text-align: center;
+      margin-bottom: 0.5rem;
+      
       .name {
-        font-weight: 600;
+        font-weight: 700;
         color: #0f172a;
+        font-size: 1rem;
+        margin-bottom: 0.25rem;
       }
+      
       .meta {
-        font-size: 0.875rem;
+        font-size: 0.75rem;
         color: #64748b;
+        font-weight: 500;
       }
     }
 
     .card-right {
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
-      align-items: flex-end;
+      gap: 0.75rem;
+      align-items: center;
 
       .status {
         font-size: 0.75rem;
-        padding: 0.25rem 0.5rem;
-        border-radius: 6px;
+        padding: 0.375rem 0.75rem;
+        border-radius: 20px;
         text-transform: capitalize;
         font-weight: 600;
+        border: 1px solid transparent;
       }
-      .status.active { background: #ecfdf5; color: #16a34a; }
-      .status.paused { background: #fff7ed; color: #f59e0b; }
-      .status.offline { background: #f8fafc; color: #64748b; }
+      
+      .status.active { 
+        background: linear-gradient(135deg, #ecfdf5, #d1fae5); 
+        color: #16a34a; 
+        border-color: #bbf7d0;
+      }
+      
+      .status.paused { 
+        background: linear-gradient(135deg, #fff7ed, #fed7aa); 
+        color: #ea580c; 
+        border-color: #fdba74;
+      }
+      
+      .status.offline { 
+        background: linear-gradient(135deg, #f8fafc, #e2e8f0); 
+        color: #64748b; 
+        border-color: #cbd5e1;
+      }
 
-      .btn-small {
-        background: none;
-        border: 1px solid #e2e8f0;
-        padding: 0.35rem 0.5rem;
-        border-radius: 6px;
-        font-weight: 600;
-        cursor: pointer;
-      }
-            .action-buttons {
+      .action-buttons {
         display: flex;
         gap: 0.5rem;
+        width: 100%;
+      }
+
+      .btn-small {
+        background: white;
+        border: 1px solid #e2e8f0;
+        padding: 0.5rem 0.75rem;
+        border-radius: 10px;
+        font-weight: 600;
+        cursor: pointer;
+        font-size: 0.75rem;
+        transition: all 0.2s ease;
+        flex: 1;
+
+        &:hover {
+          background: #f8fafc;
+          border-color: #cbd5e1;
+          transform: translateY(-1px);
+        }
       }
 
       .btn-delete {
-        border: 1px solid #fecaca; /* light red border */
-        color: #b91c1c;            /* red text */
-        background: white;
-      }
+        border: 1px solid #fecaca;
+        color: #dc2626;
+        background: linear-gradient(135deg, #fef2f2, #fee2e2);
 
-      .btn-delete:hover {
-        background: #fff1f2;       /* subtle red hover */
+        &:hover {
+          background: linear-gradient(135deg, #fee2e2, #fecaca);
+          border-color: #fca5a5;
+          transform: translateY(-1px);
+        }
       }
-
     }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .chatbot-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 1024px) {
+  .chatbot-list {
+    grid-template-columns: repeat(2, 1fr);
   }
 }

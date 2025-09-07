@@ -1,7 +1,14 @@
 // chatyourdocs/src/app/components/dashboard/dashboard.scss
+
+/* make the dashboard occupy the viewport and prevent the page from showing a browser scrollbar */
+:host, .dashboard-layout {
+  height: 100vh;
+  min-height: 100vh;
+  overflow: hidden; /* hide any outer scrollbar */
+}
+
 .dashboard-layout {
   display: flex;
-  min-height: 100vh;
   background: #f8fafc;
 }
 
@@ -17,6 +24,7 @@
   left: 0;
   top: 0;
   z-index: 100;
+  box-sizing: border-box;
 }
 
 .sidebar-header {
@@ -49,12 +57,19 @@
   color: #1e293b;
 }
 
+/* nav container: allow internal scroll but hide the scrollbar visually */
 .sidebar-nav {
   flex: 1;
   padding: 1rem 0;
   overflow-y: auto;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+.sidebar-nav::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
 }
 
+/* keep nav items tidy */
 .nav-section {
   margin-top: 1rem;
 }
@@ -69,17 +84,19 @@
   transition: all 0.2s ease;
   font-size: 0.9rem;
   font-weight: 500;
-  
-  &:hover {
-    background: #f1f5f9;
-    color: #475569;
-  }
-  
-  &.active {
-    background: #e0e7ff;
-    color: #4338ca;
-    border-right: 3px solid #4338ca;
-  }
+  border-radius: 8px;
+  margin: 0.25rem 0;
+}
+
+.nav-item:hover {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.nav-item.active {
+  background: #e0e7ff;
+  color: #4338ca;
+  border-right: 3px solid #4338ca;
 }
 
 .nav-icon {
@@ -88,6 +105,7 @@
   stroke-width: 1.5;
 }
 
+/* footer */
 .sidebar-footer {
   padding: 1rem 1.5rem;
   border-top: 1px solid #e2e8f0;
@@ -98,6 +116,7 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  justify-content: space-between;
 }
 
 .user-avatar {
@@ -123,36 +142,46 @@
   padding: 0.5rem;
   border-radius: 6px;
   transition: all 0.2s ease;
-  
-  &:hover {
-    background: #f1f5f9;
-    color: #475569;
-  }
+}
+.settings-btn:hover {
+  background: #f1f5f9;
+  color: #475569;
 }
 
-/* Main Content Styles */
+/* Main Content Styles
+   Constrain the main content area, allow internal scrolling but hide the visual scrollbar.
+*/
 .main-content {
   flex: 1;
   margin-left: 280px;
   padding: 2rem;
   min-height: 100vh;
+  height: 100vh;
+  box-sizing: border-box;
+  overflow-y: auto; /* allow internal scrolling when needed */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+.main-content::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
 }
 
+/* keep content centered and readable */
 .content-header {
   margin-bottom: 2rem;
-  
-  h1 {
-    font-size: 2rem;
-    font-weight: 600;
-    color: #1e293b;
-    margin: 0 0 0.5rem 0;
-  }
-  
-  .subtitle {
-    color: #64748b;
-    font-size: 1rem;
-    margin: 0;
-  }
+}
+
+.content-header h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 0.5rem 0;
+}
+
+.content-header .subtitle {
+  color: #64748b;
+  font-size: 1rem;
+  margin: 0;
 }
 
 /* Overview (previously in overview.scss) */
@@ -171,11 +200,11 @@
   align-items: flex-start;
   gap: 1rem;
   transition: all 0.2s ease;
-  
-  &:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    transform: translateY(-1px);
-  }
+}
+
+.stat-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
 }
 
 .stat-icon {
@@ -186,62 +215,46 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  
-  svg {
-    width: 24px;
-    height: 24px;
-  }
-  
-  &.users {
-    background: #eff6ff;
-    color: #2563eb;
-  }
-  
-  &.chatbots {
-    background: #f0fdf4;
-    color: #16a34a;
-  }
-  
-  &.documents {
-    background: #fef3c7;
-    color: #d97706;
-  }
 }
+
+.stat-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.stat-icon.users { background: #eff6ff; color: #2563eb; }
+.stat-icon.chatbots { background: #f0fdf4; color: #16a34a; }
+.stat-icon.documents { background: #fef3c7; color: #d97706; }
 
 .stat-content {
   flex: 1;
-  
-  h3 {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: #64748b;
-    margin: 0 0 0.5rem 0;
-  }
-  
-  .stat-number {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #1e293b;
-    line-height: 1;
-    margin-bottom: 0.25rem;
-  }
-  
-  .stat-change {
-    font-size: 0.75rem;
-    color: #16a34a;
-    font-weight: 500;
-  }
+}
+
+.stat-content h3 {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #64748b;
+  margin: 0 0 0.5rem 0;
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e293b;
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.stat-change {
+  font-size: 0.75rem;
+  color: #16a34a;
+  font-weight: 500;
 }
 
 /* Responsive tweaks */
 @media (max-width: 1024px) {
-  .sidebar {
-    width: 240px;
-  }
-  
-  .main-content {
-    margin-left: 240px;
-  }
+  .sidebar { width: 240px; }
+  .main-content { margin-left: 240px; padding: 1.75rem; }
 }
 
 @media (max-width: 768px) {
@@ -249,7 +262,8 @@
     transform: translateX(-100%);
     transition: transform 0.3s ease;
   }
-  
+  .sidebar.open { transform: translateX(0); }
+
   .main-content {
     margin-left: 0;
     padding: 1rem;
@@ -259,27 +273,20 @@
     grid-template-columns: 1fr;
     gap: 1rem;
   }
-  
+
   .stat-card {
     padding: 1rem;
   }
-  
+
   .content-header h1 {
     font-size: 1.5rem;
   }
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
-.main-content {
-  animation: fadeIn 0.6s ease-out;
+/* Smooth entrance */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
+.main-content { animation: fadeIn 0.6s ease-out; }

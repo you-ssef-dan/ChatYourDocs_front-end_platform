@@ -4,6 +4,10 @@ import { authGuard } from './guards/auth-guard';
 import { adminGuard } from './guards/admin-guard';
 
 export const routes: Routes = [
+
+  {
+    path: '',
+    loadComponent: () => import('./components/leading/leading').then(m => m.Leading) },
   {
     path: 'login',
     loadComponent: () => import('./components/login/login').then(m => m.Login)
@@ -48,7 +52,5 @@ export const routes: Routes = [
       }
     ]
   },
-
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: '**', loadComponent: () => import('./components/no-page/no-page').then(m => m.NoPage) }
 ];
